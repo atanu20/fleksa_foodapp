@@ -1,0 +1,26 @@
+{
+  "name": "fleksa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "instamojo-nodejs": "0.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3"
+  },
+  "engines": {
+    "node": ">=14 <15"
+  }
+}
