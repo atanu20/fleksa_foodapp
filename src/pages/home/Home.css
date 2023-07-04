@@ -1,0 +1,23 @@
+.home{
+  width: 100%;
+  min-height: 100vh;
+  padding: 75px 0;
+}
+.home_img{
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+.card_text p{
+  display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  
+}
+
+.cart_sm_img{
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+}

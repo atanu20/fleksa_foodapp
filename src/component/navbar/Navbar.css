@@ -1,0 +1,22 @@
+.par_navbar{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFEE32;
+}
+.logo_img{
+    width: 100%;
+    height: 35px;
+    object-fit: contain;
+}
+.inner_nav{
+    width: 95%;
+    height: 100%;
+    
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+
+}
