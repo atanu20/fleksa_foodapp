@@ -17,5 +17,7 @@ router.get('/success/:pid', auth, userCtrl.paymentProcess);
 router.get('/getAllOrdersById', auth, userCtrl.getAllOrdersById);
 router.get('/getAllOrdersDetByOId/:oid', auth, userCtrl.getAllOrdersDetByOId);
 router.get('/getUserDetByAddId/:addid', auth, userCtrl.getUserDetByAddId);
+router.post('/addrating', auth, userCtrl.addrating);
+router.get('/getratingbyFoodid/:fid', userCtrl.getratingbyFoodid);
 
 module.exports = router;

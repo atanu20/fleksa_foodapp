@@ -164,9 +164,63 @@ const restuCtrl = {
   getRestuORDER: async (req, res) => {
     try {
       const list = req.body.list;
-      let sql = `SELECT * FROM orderdetails INNER JOIN foods ON orderdetails.foodid=foods.food_id  INNER JOIN orders ON orderdetails.order_id=orders.ord_id where orderdetails.foodid in (${list})  order by orderdetails.od_id DESC `;
+      let sql = `SELECT * FROM orderdetails INNER JOIN foods ON orderdetails.foodid=foods.food_id  INNER JOIN orders ON orderdetails.order_id=orders.ord_id where orderdetails.foodid in (${list}) and orders.paymentstatus!="inprogress"  order by orderdetails.od_id DESC `;
       // let sql = `SELECT * FROM foods where food_id in (${arrid}) `;
       // console.log(sql);
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.send({ success: false, msg: err.message });
+        } else {
+          return res.send({ success: true, result });
+        }
+      });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
+  },
+  getAllItemsByResId: async (req, res) => {
+    try {
+      const rid = req.params.rid;
+      let sql = `SELECT * FROM foods INNER JOIN restaurant ON foods.res_id=restaurant.res_id where foods.res_id='${rid}' ORDER BY fdate DESC`;
+      // let sql = `select * from foods where res_id='${rid}' ORDER BY fdate DESC`;
+      // console.log(sql);
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.json({ success: false, msg: err.message });
+        } else {
+          return res.json({
+            success: true,
+            result,
+          });
+        }
+      });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
+  },
+  getRestuDetailsById: async (req, res) => {
+    try {
+      const rid = req.params.rid;
+      let sql = `select * from restaurant where res_id='${rid}'`;
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.json({ success: false, msg: err.message });
+        } else {
+          return res.json({
+            success: true,
+            result,
+          });
+        }
+      });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
+  },
+  getALlRestRating: async (req, res) => {
+    try {
+      const rid = req.params.rid;
+
+      let sql = `SELECT AVG(rat_val) as rating_val , COUNT(*) as totalreview FROM rating where ra_id='${rid}' GROUP BY ra_id`;
       db.query(sql, (err, result) => {
         if (err) {
           return res.send({ success: false, msg: err.message });

@@ -173,7 +173,7 @@ const userCtrl = {
   getallwishlist: async (req, res) => {
     try {
       const user = req.user;
-      let sql = `SELECT * FROM wishlist INNER JOIN restaurant ON wishlist.restu_id=restaurant.res_id INNER JOIN foods ON wishlist.fo_id=foods.food_id  where wishlist.u_id='${user.id}'`;
+      let sql = `SELECT * FROM wishlist INNER JOIN restaurant ON wishlist.restu_id=restaurant.res_id INNER JOIN foods ON wishlist.fo_id=foods.food_id  where wishlist.u_id='${user.id}' order by wish_id desc `;
       db.query(sql, (err, result) => {
         if (err) {
           return res.send({ success: false, msg: err.message });
@@ -270,6 +270,7 @@ const userCtrl = {
       var insta = new Insta.PaymentData();
 
       const REDIRECT_URL = 'https://fleksa-client.vercel.app/success';
+      // const REDIRECT_URL = 'http://localhost:4551/success';
 
       insta.setRedirectUrl(REDIRECT_URL);
       insta.send_email = 'True';
@@ -347,7 +348,7 @@ const userCtrl = {
   getAllOrdersById: async (req, res) => {
     try {
       const user = req.user;
-      let sql = `SELECT * FROM orders INNER JOIN address ON orders.address_id=address.add_id where orders.user_id='${user.id}' order by odate desc`;
+      let sql = `SELECT * FROM orders INNER JOIN address ON orders.address_id=address.add_id where orders.user_id='${user.id}' and orders.paymentstatus!="inprogress" order by odate desc`;
       db.query(sql, (err, result) => {
         if (err) {
           return res.send({ success: false, msg: err.message });
@@ -378,6 +379,59 @@ const userCtrl = {
     try {
       const addid = req.params.addid;
       let sql = `SELECT * FROM address where add_id='${addid}'`;
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.send({ success: false, msg: err.message });
+        } else {
+          return res.send({ success: true, result });
+        }
+      });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
+  },
+
+  addrating: async (req, res) => {
+    try {
+      const { ra_id, fo_id, rat_val, ord_id, odd_id } = req.body;
+
+      const data = {
+        ra_id,
+        fo_id,
+        us_id: req.user.id,
+        rat_val,
+        ord_id,
+        odd_id,
+      };
+
+      let sqll = `update orderdetails set rating='${rat_val}' where od_id='${odd_id}'`;
+      db.query(sqll, (err, result) => {
+        if (err) {
+          return res.json({ success: false, msg: err.message });
+        } else {
+          let sql = 'INSERT INTO `rating` SET ?';
+          db.query(sql, data, (err, result) => {
+            if (err) {
+              // console.log(err);
+              return res.json({ success: false, msg: err.message });
+            } else {
+              return res.json({
+                success: true,
+                msg: 'Rating Added Successfully',
+              });
+            }
+          });
+        }
+      });
+    } catch (err) {
+      return res.json({ success: false, msg: err.message });
+    }
+  },
+  getratingbyFoodid: async (req, res) => {
+    try {
+      const fid = req.params.fid;
+      // console.log(fid);
+      let sql = `SELECT AVG(rat_val) as rating_val FROM rating where fo_id='${fid}' GROUP BY fo_id`;
       db.query(sql, (err, result) => {
         if (err) {
           return res.send({ success: false, msg: err.message });
