@@ -308,6 +308,7 @@ const userCtrl = {
                   foodid: products[i].food_id,
                   foodqty: cart.items[products[i].food_id],
                   foodprice: products[i].price,
+                  rating: 0,
                 };
                 let sqll = 'INSERT INTO `orderdetails` SET ?';
                 db.query(sqll, indata, async (err, resul) => {
