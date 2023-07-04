@@ -269,7 +269,7 @@ const userCtrl = {
 
       var insta = new Insta.PaymentData();
 
-      const REDIRECT_URL = 'http://localhost:4551/success';
+      const REDIRECT_URL = 'https://fleksa-client.vercel.app/success';
 
       insta.setRedirectUrl(REDIRECT_URL);
       insta.send_email = 'True';
